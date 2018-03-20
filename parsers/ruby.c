@@ -142,6 +142,15 @@ static bool canMatchKeyword (const unsigned char** s, const char* literal)
 	return canMatch (s, literal, notIdentChar);
 }
 
+static bool isIfEvaluation (const unsigned char** s, const char* literal)
+{
+  char * found = strstr (*s, literal);
+  if (found != NULL)
+    return true;
+  else
+    return false;
+}
+
 /*
 * Attempts to advance 'cp' past a Ruby operator method name. Returns
 * true if successful (and copies the name into 'name'), false otherwise.
@@ -450,7 +459,11 @@ static void findRubyTags (void)
 		}
 		else if (canMatchKeyword (&cp, "case") ||
 		         canMatchKeyword (&cp, "if") ||
-		         canMatchKeyword (&cp, "unless"))
+		         canMatchKeyword (&cp, "unless") ||
+		         isIfEvaluation (&cp, "= if") ||
+		         isIfEvaluation (&cp, "= unless") ||
+		         isIfEvaluation (&cp, "= case")
+             )
 		{
 			enterUnnamedScope ();
 		}

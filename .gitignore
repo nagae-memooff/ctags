@@ -15,6 +15,7 @@
 *.TMP
 *.tmp
 *~
+*.swp
 .deps
 .dirstamp
 a.out
